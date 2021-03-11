@@ -6,7 +6,7 @@ import java.util.*;
 
 public class World
 {
-    private final int worldLifePoints = 4000;
+    private final int worldLifePoints = 3000;
     private final int numberOfRounds = 40;
     private ArrayList<Nation> allNations = new ArrayList<>();
     private ArrayList<Nation> allLivingNations = new ArrayList<>();
@@ -44,12 +44,12 @@ public class World
                     System.out.print("Game is over! Winning Nation is: ");
                     if (survivingNations.size() == 0)
                     {
-                        System.out.println("All Nations Distroyed.");
+                        System.out.println("All Nations Destroyed.");
                     }
                     else
                     {
                         System.out.println(survivingNations);
-                        System.out.println("The survivors are:");
+                        System.out.println("The survivors are: ");
                         for (Integer i = 0; i < worldSurvivingPeople.size(); i++)
                         {
                             System.out.println(worldCreatedPeople.get(worldSurvivingPeople.get(i)));
@@ -66,8 +66,9 @@ public class World
 
     public void createWorld()
     {
-        allNations.add(new Nation("Idiots", (worldLifePoints / 2)));
-        allNations.add(new Nation("Minions", (worldLifePoints) / 2));
+        allNations.add(new Nation("Wolves", (worldLifePoints) / 3)); //Kimberly Wolf's Nation
+        allNations.add(new Nation("Bogfrogs", (worldLifePoints) / 3)); // Eric Gorski's Nation
+        allNations.add(new Nation("Goblins",(worldLifePoints) / 3)); // Shane Houghton's Nation
     }
 
 
