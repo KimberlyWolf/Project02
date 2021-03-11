@@ -8,6 +8,7 @@ import Project02.PeopleType;
 import Project02.SchaperWarrior;
 import Project02.SchaperWizard;
 
+
 public class Tribe
 {
     private String nationName;
@@ -21,11 +22,14 @@ public class Tribe
         nationName = nation;
         tribeName = tribe;
         tribeLifePoints = lifePoints;
-        for(int i = 0; i < 5; i++)
-            if(i % 2 == 0)
-                members.add(new SchaperWarrior(nationName, tribeName, tribeLifePoints / 5));
+        for(int i = 0; i < 6; i++) //Healer is commented out here, until we actually add the Class itself
+            //if(i % 6 == 0)
+                //members.add(new SchaperHealer(nationName, tribeName, tribeLifePoints / 6));
+
+            if(i % 6 == 1)
+                members.add(new SchaperWarrior(nationName, tribeName, tribeLifePoints / 6));
             else
-                members.add(new SchaperWizard(nationName, tribeName, tribeLifePoints / 5));
+                members.add(new SchaperWizard(nationName, tribeName, tribeLifePoints / 6));
         for(int i = 0; i < members.size(); i++)
             livingMembers.addAll(members);
     }

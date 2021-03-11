@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import Project02.Tribe;
 import Project02.People;
 
+/*
+What has changed: No nationCount (and any code pertaining to it), Update Tribe size
+No isNationAlive();
+ */
 public class Nation
 {
     private int nationLifePoints;
@@ -19,9 +23,9 @@ public class Nation
     {
         nationName = name;
         nationLifePoints = lifePoints;
-        for(int i = 0; i < 5; i++)
+        for(int i = 1; i < 7; i++)
         {
-            this.tribes.add(new Tribe(nationName, "Tribe" + i, nationLifePoints / 5));
+            this.tribes.add(new Tribe(nationName, "Tribe" + i, nationLifePoints / 6));
         }
         population.addAll(getNationPopulation());
         livingPopulation.addAll(population);
