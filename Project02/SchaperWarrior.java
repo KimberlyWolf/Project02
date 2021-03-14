@@ -1,9 +1,5 @@
 package Project02;
 
-import Project02.People;
-import Project02.PeopleType;
-
-
 public class SchaperWarrior extends People
 {
     SchaperWarrior(String nation, String tribe, int lifePoints)
@@ -15,6 +11,9 @@ public class SchaperWarrior extends People
 
     public int encounterStrategy(People otherPerson)
     {
+        // The hard-coded values in this will need to come from the "charitable" and "careful" healing
+        // strategies, respectively -e
+        // We'll need some print statements either here or in the encounter -e
         int lifePoints = 0;
         if(this.getNation() == otherPerson.getNation())
         {

@@ -1,10 +1,6 @@
 package Project02;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.ArrayList;
-import Project02.Tribe;
-import Project02.People;
 
 /*
 What has changed: No nationCount (and any code pertaining to it), Update Tribe size
@@ -19,13 +15,15 @@ public class Nation
     private ArrayList<People> livingPopulation = new ArrayList<>();
 
 
-    public Nation(String name, int lifePoints)
+    public Nation(String name, int lifePoints, int numberOfTribes, int numberOfPeoplePerTribe)
     {
         nationName = name;
         nationLifePoints = lifePoints;
-        for(int i = 1; i < 7; i++)
+
+        for(int i = 1; i < numberOfTribes; i++)
         {
-            this.tribes.add(new Tribe(nationName, "Tribe" + i, nationLifePoints / 6));
+            this.tribes.add(new Tribe(nationName, "Tribe" + i, lifePoints/numberOfTribes,
+                    numberOfPeoplePerTribe));
         }
         population.addAll(getNationPopulation());
         livingPopulation.addAll(population);
@@ -49,13 +47,14 @@ public class Nation
         return livingPopulation;
     }
 
-
+    // Unused -e
+    /*
     public String getNationName()
     {
         return nationName;
     }
 
-
+    // Unused -e
     public void printTribesStatus()
     {
         for(int tribe = 0; tribe < 1; tribe++)
@@ -71,6 +70,7 @@ public class Nation
             }
         }
     }
+    */
 
     public String toString()
     {

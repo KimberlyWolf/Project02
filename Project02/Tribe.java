@@ -3,11 +3,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
-import Project02.People;
-import Project02.PeopleType;
-import Project02.SchaperWarrior;
-import Project02.SchaperWizard;
-
 
 public class Tribe
 {
@@ -17,20 +12,24 @@ public class Tribe
     private ArrayList<People> members = new ArrayList<>();
     private ArrayList<People> livingMembers = new ArrayList<>();
 
-    public Tribe(String nation, String tribe, int lifePoints)
+    public Tribe(String nation, String tribe, int lifePoints, int numberOfPeoplePerTribe)
     {
         nationName = nation;
         tribeName = tribe;
         tribeLifePoints = lifePoints;
-        for(int i = 0; i < 6; i++) //Healer is commented out here, until we actually add the Class itself
-            //if(i % 6 == 0)
-                //members.add(new SchaperHealer(nationName, tribeName, tribeLifePoints / 6));
-
-            if(i % 6 == 1)
-                members.add(new SchaperWarrior(nationName, tribeName, tribeLifePoints / 6));
+        for (int i = 0; i < numberOfPeoplePerTribe; i++)
+            // This WILL become i%6 == ... once we have the other 3 strategies implemented, but no sooner.
+            if (i%3 == 0)
+                members.add(new SchaperWarrior(nationName, tribeName,
+                        tribeLifePoints/numberOfPeoplePerTribe));
+            else if (i%3 == 1)
+                members.add(new SchaperWizard(nationName, tribeName,
+                        tribeLifePoints /numberOfPeoplePerTribe));
             else
-                members.add(new SchaperWizard(nationName, tribeName, tribeLifePoints / 6));
-        for(int i = 0; i < members.size(); i++)
+                members.add(new SelfDefenseHealer(nationName, tribeName,
+                        tribeLifePoints /numberOfPeoplePerTribe));
+
+        for (int i = 0; i < members.size(); i++)
             livingMembers.addAll(members);
     }
 
