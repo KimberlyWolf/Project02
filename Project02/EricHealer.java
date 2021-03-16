@@ -7,7 +7,7 @@ public class EricHealer extends People {
     public EricHealer(String nation, String tribe, int lifePoints)
     {
         super(nation, tribe, healer, lifePoints);
-        myDescription = "\tSelf-Defense Wizard";
+        myDescription = "\tEric Healer";
     }
 
     public int encounterStrategy(Project02.People otherPerson) {
