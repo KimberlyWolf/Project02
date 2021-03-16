@@ -2,15 +2,14 @@ package Project02;
 
 import static Project02.PeopleType.*;
 
-public class SelfDefenseHealer extends Project02.People {
+public class EricWarrior extends People {
 
-    public SelfDefenseHealer(String nation, String tribe, int lifePoints)
+    public EricWarrior(String nation, String tribe, int lifePoints)
     {
-        super(nation, tribe, healer, lifePoints);
-        myDescription = "\tSelf-Defense Healer";
+        super(nation, tribe, warrior, lifePoints);
+        myDescription = "\tSelf-Defense Wizard";
     }
 
-    // This will need to be made into an abstract class that calls a healthEncounterStrategy or attackEncounterStrategy
     public int encounterStrategy(Project02.People otherPerson) {
         int lifePoints = 0;
         // opposing nation
@@ -101,3 +100,4 @@ public class SelfDefenseHealer extends Project02.People {
 
 
 }
+
