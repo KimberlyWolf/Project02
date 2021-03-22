@@ -2,9 +2,9 @@ package Project02;
 
 import static Project02.PeopleType.*;
 
-public class EricHealer extends People {
+public class EricHealerPacifist extends People {
 
-    public EricHealer(String nation, String tribe, int lifePoints)
+    public EricHealerPacifist(String nation, String tribe, int lifePoints)
     {
         super(nation, tribe, healer, lifePoints);
         myDescription = "\tEric Healer";
@@ -15,6 +15,8 @@ public class EricHealer extends People {
         // opposing nation
         if (!this.getNation().equals((otherPerson.getNation())))
         {
+            // always runs
+            lifePoints -= 1;
             // greater health than enemy
             if (this.getLifePoints() > otherPerson.getLifePoints())
             {
@@ -77,6 +79,7 @@ public class EricHealer extends People {
             // different tribe
             else {
                 // more health than friendly
+                // this will always share enough health to make them equal
                 if (this.getLifePoints() > otherPerson.getLifePoints()) {
                     switch (otherPerson.getType()) {
                         case warrior:

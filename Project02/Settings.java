@@ -9,9 +9,11 @@ public class Settings {
     private int numberOfPeoplePerTribe;
     private int numberOfClasses;
     private int minimumRequiredPeoplePerClass;
+    private int runAwayDamageFactor;
 
     public Settings(int maxRounds, int totalLifePointsPerNation, int numberOfNations, int numberOfTribesPerNation,
-                    int numberOfPeoplePerTribe, int numberOfClasses, int minimumRequiredPeoplePerClass)
+                    int numberOfPeoplePerTribe, int numberOfClasses, int minimumRequiredPeoplePerClass, int
+                            runAwayDamageFactor)
     {
         this.maxRounds = maxRounds;
         this.totalLifePointsPerNation = totalLifePointsPerNation;
@@ -20,6 +22,7 @@ public class Settings {
         this.numberOfPeoplePerTribe = numberOfPeoplePerTribe;
         this.numberOfClasses = numberOfClasses;
         this.minimumRequiredPeoplePerClass = minimumRequiredPeoplePerClass;
+        this.runAwayDamageFactor = runAwayDamageFactor;
     }
 
     public int getMaxRounds() {
@@ -77,4 +80,12 @@ public class Settings {
     public void setMinimumRequiredPeoplePerClass(int requiredClassCount) {
         this.minimumRequiredPeoplePerClass = requiredClassCount;
     }
+
+    public int getRunAwayDamageFactor() { return this.runAwayDamageFactor; }
+
+    public void setRunAwayDamageFactor(int factor) {
+        this.runAwayDamageFactor = factor;
+    }
+
+
 }

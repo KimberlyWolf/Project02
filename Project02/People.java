@@ -53,6 +53,8 @@ public abstract class People
         return (myLifePoints > 0);
     }
 
+    public String getDescription() { return myDescription; }
+
     public int getLifePoints()
     {
         return myLifePoints;

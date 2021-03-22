@@ -27,34 +27,35 @@ public class World {
         {
             ArrayList<Integer> worldSurvivingPeople = new ArrayList<>();
 
-            for(int round = 1; round < numberOfRounds; round++)
+            for(int round = 1; round <= numberOfRounds+1; round++)
             {
+                if (round > numberOfRounds) {
+                    System.out.println("Stalemate! You're ALL losers!");
+                    break;
+                }
                 Set<String> survivingNations = new HashSet<>();
                 System.out.println("Round number: " + round);
                 worldSurvivingPeople.clear();
                 worldSurvivingPeople.addAll(getWorldSurvivingPeople());
                 survivingNations.addAll(getSurvivingNations());
-                if ((worldSurvivingPeople.size() >= 2) && (survivingNations.size() > 1) )
+                //
+                if ((worldSurvivingPeople.size() >= 2) && (survivingNations.size() > 1) && (round < numberOfRounds+1)) {
                     playOneRound(worldSurvivingPeople);
-                else
-                {
+                }
+                else {
                     System.out.print("Game is over! Winning Nation is: ");
-                    if (survivingNations.size() == 0)
-                    {
+                    if (survivingNations.size() == 0) {
                         System.out.println("All Nations Destroyed.");
                     }
-                    else
-                    {
+                    else {
                         System.out.println(survivingNations);
                         System.out.println("The survivors are: ");
-                        for (Integer i = 0; i < worldSurvivingPeople.size(); i++)
-                        {
+                        for (Integer i = 0; i < worldSurvivingPeople.size(); i++) {
                             System.out.println(worldCreatedPeople.get(worldSurvivingPeople.get(i)));
                         }
                     }
                     break;
                 }
-
             }
 
     }
@@ -116,11 +117,8 @@ public class World {
         }
         return survivingNations;
     }
-
-    // needlessly complex. honestly, rewrite the whole thing.
-    // doesn't work how expected to, either.
-    // added some print statements to understand what is happening where.
-    // they sometimes seem incoherent because things happen in odd places in the original code.
+    /*
+    // original code
     public void encounter(Integer person1, Integer person2)
     {
         int person1LifePointsToUse;
@@ -175,6 +173,130 @@ public class World {
         worldCreatedPeople.get(person2).modifyLifePoints((-1));
 
     }
+    */
+
+
+    public void encounter(int personOne, int personTwo) {
+        // Announces encounter
+        String personOneDescription = worldCreatedPeople.get(personOne).getDescription() + " from " +
+                worldCreatedPeople.get(personOne).getTribe() + " of " +
+                worldCreatedPeople.get(personOne).getNation();
+        String personTwoDescription = worldCreatedPeople.get(personTwo).getDescription() + " from " +
+                worldCreatedPeople.get(personTwo).getTribe() + " of " +
+                worldCreatedPeople.get(personTwo).getNation();
+        System.out.println("Encounter: " + personOneDescription + " encounters " + personTwoDescription);
+
+        // Determine friendly or hostile encounter based on same nation or not
+        String personOneNation = worldCreatedPeople.get(personOne).getNation();
+        String personTwoNation = worldCreatedPeople.get(personTwo).getNation();
+        if (personOneNation.equals(personTwoNation))
+        {
+            encounterPeaceful(personOne, personTwo);
+        } else
+        {
+            encounterHostile(personOne, personTwo);
+        }
+    }
+
+
+    // moves the life comparison logic out of encounter strategies
+    public void encounterPeaceful(int personOne, int personTwo) {
+        int personOneLifePoints = worldCreatedPeople.get(personOne).getLifePoints();
+        int personTwoLifePoints = worldCreatedPeople.get(personTwo).getLifePoints();
+
+        int moreHealthyPerson = personOneLifePoints > personTwoLifePoints ? personOne : personTwo;
+        int lessHealthyPerson = personOneLifePoints > personTwoLifePoints ? personTwo : personOne;
+
+        // readable references
+        String giver = worldCreatedPeople.get(moreHealthyPerson).getDescription() + " from " +
+                worldCreatedPeople.get(moreHealthyPerson).getTribe() + " of " +
+                worldCreatedPeople.get(moreHealthyPerson).getNation();
+        String receiver = worldCreatedPeople.get(lessHealthyPerson).getDescription() + " from " +
+                worldCreatedPeople.get(lessHealthyPerson).getTribe() + " of " +
+                worldCreatedPeople.get(lessHealthyPerson).getNation();
+
+        // more healthy person shares
+        int healthShared = worldCreatedPeople.get(moreHealthyPerson).encounterStrategy(worldCreatedPeople.get(lessHealthyPerson));
+        System.out.println(giver + " shares " + healthShared + " with "  + receiver);
+        worldCreatedPeople.get(lessHealthyPerson).modifyLifePoints(-healthShared); // negative
+    }
+
+
+    public void encounterHostile(int personOneWorldIndex, int personTwoWorldIndex) {
+        // random generator
+        long seed = System.currentTimeMillis();
+        Random random = new Random(seed);
+        int diceRoll = random.nextInt();
+
+        // attacker is person1 and defender is person2 if dice roll is even
+        int attackerIndex = diceRoll%2==0 ? personOneWorldIndex : personTwoWorldIndex;
+        int defenderIndex = diceRoll%2==1 ? personOneWorldIndex : personTwoWorldIndex;
+
+        int attackerHealthRisked, defenderHealthRisked;
+        int attackerDamageDealt, defenderDamageDealt;
+        boolean attackerRanAway = false, defenderRanAway = false;
+
+        // readable references to the people
+        String attacker = worldCreatedPeople.get(attackerIndex).getDescription() + " from " +
+                worldCreatedPeople.get(attackerIndex).getTribe() + " of " +
+                worldCreatedPeople.get(attackerIndex).getNation();
+        String defender = worldCreatedPeople.get(defenderIndex).getDescription() + " from " +
+                worldCreatedPeople.get(defenderIndex).getTribe() + " of " +
+                worldCreatedPeople.get(defenderIndex).getNation();
+
+        System.out.println(attacker + " becomes attacker, and " + defender + " becomes defender.");
+
+        // attacker gets to decide if they want to run away before the encounter begins
+        attackerHealthRisked = worldCreatedPeople.get(attackerIndex).encounterStrategy(worldCreatedPeople.get(defenderIndex));
+        // if attacker runs away
+        if (attackerHealthRisked == 0) {
+            attackerRanAway = true;
+            attackerDamageDealt = 0;
+            defenderDamageDealt = 0;
+        } else {
+            // attacker fights
+            defenderHealthRisked = worldCreatedPeople.get(defenderIndex).encounterStrategy(worldCreatedPeople.get(attackerIndex));
+            // if defender tries running away, zero health will be risked
+            if (defenderHealthRisked == 0){
+                defenderRanAway = true;
+                // deals a total of (calculated below)
+                attackerDamageDealt = attackerHealthRisked; // attacker doesn't deal full damage if defender runs
+                defenderDamageDealt = defenderHealthRisked; // zero when running away
+            } else {
+                // regular combat scenario
+                // at most, do 1.5x health risked
+                // at worst, do 0.5x health risked
+                attackerDamageDealt = (int) (random.nextDouble()+0.5) * attackerHealthRisked;
+                defenderDamageDealt = (int) (random.nextDouble()+0.5) * defenderHealthRisked;
+            }
+        }
+        // deal damage
+        // defender does not take full damage if running away
+        if (defenderRanAway) { attackerDamageDealt = attackerDamageDealt/settings.getRunAwayDamageFactor(); }
+
+        System.out.println(attacker + " deals " + attackerDamageDealt + " to " + defender);
+        worldCreatedPeople.get(attackerIndex).modifyLifePoints(-defenderDamageDealt);
+        System.out.println(defender + " deals " + defenderDamageDealt +
+                " to " + attacker);
+        worldCreatedPeople.get(defenderIndex).modifyLifePoints(-attackerDamageDealt);
+
+        // penalties for running away applied after combat
+        if (attackerRanAway) {
+            // when attacker runs away, they lose one health, and defender gains one health
+            System.out.println(attacker + " runs away, losing 1 life.");
+            worldCreatedPeople.get(attackerIndex).modifyLifePoints(-1);
+            System.out.println("Consequently, " + defender + "gains 1 life.");
+            worldCreatedPeople.get(defenderIndex).modifyLifePoints(1);
+        } else if (defenderRanAway) {
+            System.out.println(defender + " runs away, losing 1 life.");
+            worldCreatedPeople.get(defenderIndex).modifyLifePoints(-1);
+            System.out.println("Consequently, " + attacker + "gains 1 life.");
+            worldCreatedPeople.get(attackerIndex).modifyLifePoints(1);
+        }
+
+        // aging not mentioned in client requirements and has been removed
+    }
+
 
 
     public void playOneRound(ArrayList<Integer> combatants)
