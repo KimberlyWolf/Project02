@@ -69,19 +69,10 @@ public class World {
         int lifePointsPerNation = settings.getTotalLifePointsPerNation();
         int numberOfTribesPerNation = settings.getNumberOfTribesPerNation();
         int numberOfPeoplePerTribe = settings.getNumberOfPeoplePerTribe();
-        // Some not yet used
-        // int numberOfClasses = settings.getNumberOfClasses();
-        // int minimumNumberOfPeoplePerClass = settings.getMinimumRequiredPeoplePerClass();
-        /*
-        allNations.add(new Nation("Wolves", lifePointsPerNation, numberOfTribesPerNation,
-                numberOfPeoplePerTribe)); // Kimberly Wolf's Nation
-        allNations.add(new Nation("Bogfrogs", lifePointsPerNation, numberOfTribesPerNation,
-                numberOfPeoplePerTribe)); // Eric Gorski's Nation
-        allNations.add(new Nation("Goblins", lifePointsPerNation, numberOfTribesPerNation,
-                numberOfPeoplePerTribe)); // Shane Houghton's Nation
-        */
+
+        allNations.add(new KimNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
         allNations.add(new EricNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
-        allNations.add(new DummyNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
+        allNations.add(new ShaneNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
     }
 
 
