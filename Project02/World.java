@@ -171,7 +171,7 @@ public class World {
 
         // attacker is person1 and defender is person2 if dice roll is even
         int attackerIndex = diceRoll%2==0 ? personOneWorldIndex : personTwoWorldIndex;
-        int defenderIndex = diceRoll%2==1 ? personTwoWorldIndex : personOneWorldIndex;
+        int defenderIndex = diceRoll%2==0 ? personTwoWorldIndex : personOneWorldIndex;
 
         // init vars
         int attackerHealthRisked, defenderHealthRisked;
