@@ -4,33 +4,21 @@ import java.util.Collections;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 
-public class Tribe
+public abstract class Tribe
 {
-    private String nationName;
-    private String tribeName;
-    private int tribeLifePoints;
-    private ArrayList<People> members = new ArrayList<>();
-    private ArrayList<People> livingMembers = new ArrayList<>();
+    protected String nationName;
+    protected String tribeName;
+    protected int tribeLifePoints;
+    protected int numberOfPeoplePerTribe;
+    protected ArrayList<People> members = new ArrayList<>();
+    protected ArrayList<People> livingMembers = new ArrayList<>();
 
-    public Tribe(String nation, String tribe, int lifePoints, int numberOfPeoplePerTribe)
+    public Tribe(String nation, String tribe, int lifePoints, int peoplePerTribe)
     {
         nationName = nation;
         tribeName = tribe;
         tribeLifePoints = lifePoints;
-        for (int i = 0; i < numberOfPeoplePerTribe; i++)
-            // This WILL become i%6 == ... once we have the other 3 strategies implemented, but no sooner.
-            if (i%3 == 0)
-                members.add(new SchaperWarrior(nationName, tribeName,
-                        tribeLifePoints/numberOfPeoplePerTribe));
-            else if (i%3 == 1)
-                members.add(new SchaperWizard(nationName, tribeName,
-                        tribeLifePoints /numberOfPeoplePerTribe));
-            else
-                members.add(new SelfDefenseHealer(nationName, tribeName,
-                        tribeLifePoints /numberOfPeoplePerTribe));
-
-        for (int i = 0; i < members.size(); i++)
-            livingMembers.addAll(members);
+        numberOfPeoplePerTribe = peoplePerTribe;
     }
 
     public ArrayList<People> getLivingTribeMembers()
@@ -57,15 +45,6 @@ public class Tribe
         //System.out.println(livingMembers);
         return livingMembers;
     }
-    /*
-    public void printMembers()
-    {
-        for(int i = 0; i < 2; i++)
-        {
-            System.out.println(people.get(i));
-        }
-    }
-*/
 
 
     public int getTribeSize()
@@ -101,5 +80,11 @@ public class Tribe
         result = result + '\n';
         return result;
     }
+
+    public int getNumberOfPeoplePerTribe() {
+        return numberOfPeoplePerTribe;
+    }
+
+    public abstract void populateTribe();
 
 }

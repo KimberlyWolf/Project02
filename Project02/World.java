@@ -20,7 +20,9 @@ public class World {
         Date seed = new Date();
         generator = new Random(seed.getTime());
         createWorld();
+        // this isnt adding anything
         worldCreatedPeople.addAll(getWorldCreatedPopulation());
+        System.out.println(worldCreatedPeople);
     }
 
     public void war()
@@ -70,12 +72,16 @@ public class World {
         // Some not yet used
         // int numberOfClasses = settings.getNumberOfClasses();
         // int minimumNumberOfPeoplePerClass = settings.getMinimumRequiredPeoplePerClass();
+        /*
         allNations.add(new Nation("Wolves", lifePointsPerNation, numberOfTribesPerNation,
                 numberOfPeoplePerTribe)); // Kimberly Wolf's Nation
         allNations.add(new Nation("Bogfrogs", lifePointsPerNation, numberOfTribesPerNation,
                 numberOfPeoplePerTribe)); // Eric Gorski's Nation
         allNations.add(new Nation("Goblins", lifePointsPerNation, numberOfTribesPerNation,
                 numberOfPeoplePerTribe)); // Shane Houghton's Nation
+        */
+        allNations.add(new EricNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
+        allNations.add(new DummyNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
     }
 
 
@@ -165,7 +171,7 @@ public class World {
 
         // attacker is person1 and defender is person2 if dice roll is even
         int attackerIndex = diceRoll%2==0 ? personOneWorldIndex : personTwoWorldIndex;
-        int defenderIndex = diceRoll%2==1 ? personOneWorldIndex : personTwoWorldIndex;
+        int defenderIndex = diceRoll%2==1 ? personTwoWorldIndex : personOneWorldIndex;
 
         // init vars
         int attackerHealthRisked, defenderHealthRisked;

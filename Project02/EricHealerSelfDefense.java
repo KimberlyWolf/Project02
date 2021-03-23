@@ -7,7 +7,7 @@ public class EricHealerSelfDefense extends People {
     public EricHealerSelfDefense(String nation, String tribe, int lifePoints)
     {
         super(nation, tribe, healer, lifePoints);
-        myDescription = "\tEric Healer";
+        myDescription = "\tEric Self-Defense Healer";
     }
 
     public int encounterStrategy(Project02.People otherPerson) {
@@ -20,14 +20,10 @@ public class EricHealerSelfDefense extends People {
             {
                 switch(otherPerson.getType()) {
                     case warrior:
-                        // TODO
-                        break;
                     case wizard:
-                        // TODO
+                        lifePoints = this.getLifePoints();
                         break;
                     case healer:
-                        // TODO
-                        break;
                     default:
                         break;
                 }
@@ -36,13 +32,9 @@ public class EricHealerSelfDefense extends People {
             else {
                 switch(otherPerson.getType()) {
                     case warrior:
-                        // TODO
-                        break;
                     case wizard:
-                        // TODO
-                        break;
                     case healer:
-                        // TODO
+                        lifePoints = this.getLifePoints();
                         break;
                     default:
                         break;
@@ -58,13 +50,9 @@ public class EricHealerSelfDefense extends People {
                 if (this.getLifePoints() > otherPerson.getLifePoints()) {
                     switch (otherPerson.getType()) {
                         case warrior:
-                            // TODO
-                            break;
                         case wizard:
-                            // TODO
-                            break;
                         case healer:
-                            // TODO
+                            lifePoints = this.getLifePoints() - otherPerson.getLifePoints();
                             break;
                         default:
                             break;
@@ -77,13 +65,9 @@ public class EricHealerSelfDefense extends People {
                 if (this.getLifePoints() > otherPerson.getLifePoints()) {
                     switch (otherPerson.getType()) {
                         case warrior:
-                            // TODO
-                            break;
                         case wizard:
-                            // TODO
-                            break;
                         case healer:
-                            // TODO
+                            lifePoints = this.getLifePoints() - otherPerson.getLifePoints();
                             break;
                         default:
                             break;
