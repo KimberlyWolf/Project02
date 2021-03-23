@@ -178,12 +178,8 @@ public class World {
 
     public void encounter(int personOne, int personTwo) {
         // Announces encounter
-        String personOneDescription = worldCreatedPeople.get(personOne).getDescription() + " from " +
-                worldCreatedPeople.get(personOne).getTribe() + " of " +
-                worldCreatedPeople.get(personOne).getNation();
-        String personTwoDescription = worldCreatedPeople.get(personTwo).getDescription() + " from " +
-                worldCreatedPeople.get(personTwo).getTribe() + " of " +
-                worldCreatedPeople.get(personTwo).getNation();
+        String personOneDescription = displayPersonInfo(personOne);
+        String personTwoDescription = displayPersonInfo(personTwo);
         System.out.println("Encounter: " + personOneDescription + " encounters " + personTwoDescription);
 
         // Determine friendly or hostile encounter based on same nation or not
@@ -208,12 +204,8 @@ public class World {
         int lessHealthyPerson = personOneLifePoints > personTwoLifePoints ? personTwo : personOne;
 
         // readable references
-        String giver = worldCreatedPeople.get(moreHealthyPerson).getDescription() + " from " +
-                worldCreatedPeople.get(moreHealthyPerson).getTribe() + " of " +
-                worldCreatedPeople.get(moreHealthyPerson).getNation();
-        String receiver = worldCreatedPeople.get(lessHealthyPerson).getDescription() + " from " +
-                worldCreatedPeople.get(lessHealthyPerson).getTribe() + " of " +
-                worldCreatedPeople.get(lessHealthyPerson).getNation();
+        String giver = displayPersonInfo(moreHealthyPerson);
+        String receiver = displayPersonInfo(lessHealthyPerson);
 
         // more healthy person shares
         int healthShared = worldCreatedPeople.get(moreHealthyPerson).encounterStrategy(worldCreatedPeople.get(lessHealthyPerson));
@@ -236,13 +228,9 @@ public class World {
         int attackerDamageDealt, defenderDamageDealt;
         boolean attackerRanAway = false, defenderRanAway = false;
 
-        // readable references to the people
-        String attacker = worldCreatedPeople.get(attackerIndex).getDescription() + " from " +
-                worldCreatedPeople.get(attackerIndex).getTribe() + " of " +
-                worldCreatedPeople.get(attackerIndex).getNation();
-        String defender = worldCreatedPeople.get(defenderIndex).getDescription() + " from " +
-                worldCreatedPeople.get(defenderIndex).getTribe() + " of " +
-                worldCreatedPeople.get(defenderIndex).getNation();
+        // readable references
+        String attacker = displayPersonInfo(attackerIndex);
+        String defender = displayPersonInfo(defenderIndex);
 
         System.out.println(attacker + " becomes attacker, and " + defender + " becomes defender.");
 
@@ -303,12 +291,12 @@ public class World {
     {
         // modified this to specify what number this is on the command line
         System.out.println("Total no. combatants: " + combatants.size());
-        // Unused, commented out -e
-        //ArrayList<Integer> survivors = new ArrayList<>();
+
         int numberOfCombatants;
         Collections.shuffle(combatants);
         numberOfCombatants = combatants.size() - 1;
         int combatantIndex = 0;
+
         while(combatantIndex < numberOfCombatants)
         {
             encounter(combatants.get(combatantIndex), combatants.get(combatantIndex+1));
@@ -317,5 +305,11 @@ public class World {
     }
 
 
+    public String displayPersonInfo(int person) {
+
+        return worldCreatedPeople.get(person).getDescription() + " from " + worldCreatedPeople.get(person).getTribe() +
+                " of " + worldCreatedPeople.get(person).getNation();
+
+    }
 
 }
