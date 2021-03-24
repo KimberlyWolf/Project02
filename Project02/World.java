@@ -7,7 +7,7 @@ public class World {
     private int numberOfRounds;
     private ArrayList<Nation> allNations = new ArrayList<>();
     private ArrayList<Nation> allLivingNations = new ArrayList<>();
-    private Settings settings;
+    private Project02.Settings settings;
 
     Random generator;
     ArrayList<People> worldCreatedPeople = new ArrayList<>();
