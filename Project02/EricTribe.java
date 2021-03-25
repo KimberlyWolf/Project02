@@ -1,8 +1,4 @@
 package Project02;
-import java.util.Collection;
-import java.util.Collections;
-import java.io.StringBufferInputStream;
-import java.util.ArrayList;
 
 public class EricTribe extends Tribe
 {
@@ -14,10 +10,10 @@ public class EricTribe extends Tribe
 
     @Override
     public void populateTribe() {
-        members.add(new EricWarrior(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
-        members.add(new EricWarrior(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
-        members.add(new EricWizard(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
-        members.add(new EricWizard(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
+        members.add(new EricWarriorOpportunist(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
+        members.add(new EricWarriorKamikaze(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
+        members.add(new EricWizardCritsOrRuns(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
+        members.add(new EricWizardChaote(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
         members.add(new EricHealerSelfDefense(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
         members.add(new EricHealerPacifist(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
 
