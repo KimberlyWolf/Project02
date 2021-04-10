@@ -2,14 +2,33 @@ package Project02;
 
 import static Project02.PeopleType.healer;
 //this healer will fight as well as heal. He is not very powerful when dealing damage.
+/**
+ * Creating a new Healer for Shane's tribe/nation utilizing a self-made, unique
+ *         strategy that can be used in our WarringNations game.
+ *         Extends People.
+ */
 public class ShaneFightingHealer extends People {
 
+    /**
+     * From the extension of the People java class, we create a new healer person.
+     * @param nation Nation Shane's healer belongs to.
+     * @param tribe Tribe Shane's healer belongs to.
+     * @param lifePoints Number of life points Shane's healer has.
+     */
     public ShaneFightingHealer(String nation, String tribe, int lifePoints)
     {
         super(nation, tribe, healer, lifePoints);
         myDescription = "\tShane Healer";
     }
 
+    /**
+     * Individual strategies to influence how the game is played. This strategy determines
+     *       how this player interacts from people from other nations, their own nation,
+     *       and their own tribe.
+     * @param otherPerson The opponent player 1 is going against
+     * @return Life points to determine if this player runs away, how much to damage to
+     *       deal, or how much to heal.
+     */
     public int encounterStrategy(People otherPerson) {
         int lifePoints = 0;
         // opposing nation

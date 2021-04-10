@@ -2,14 +2,34 @@ package Project02;
 
 import static Project02.PeopleType.wizard;
 //this wizard targets healers by doing much more damage to them in fights.
+
+/**
+ * Creating a new Wizard for Shane's tribe/nation utilizing a self-made, unique
+ *         strategy that can be used in our WarringNations game.
+ *         Extends People.
+ */
 public class ShaneHealerKillerWizard extends People {
 
+    /**
+     * From the extension of the People java class, we create a new wizard person.
+     * @param nation Nation Shane's wizard belongs to.
+     * @param tribe Tribe Shane's wizard belongs to.
+     * @param lifePoints Number of life points Shane's wizard has.
+     */
     public ShaneHealerKillerWizard(String nation, String tribe, int lifePoints)
     {
         super(nation, tribe, wizard, lifePoints);
         myDescription = "\tShane Healer-Killing Wizard";
     }
 
+    /**
+     * Individual strategies to influence how the game is played. This strategy determines
+     *       how this player interacts from people from other nations, their own nation,
+     *       and their own tribe.
+     * @param otherPerson The opponent player 1 is going against
+     * @return Life points to determine if this player runs away, how much to damage to
+     *       deal, or how much to heal.
+     */
     public int encounterStrategy(People otherPerson) {
         int lifePoints = 0;
         // opposing nation

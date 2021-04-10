@@ -1,24 +1,34 @@
 package Project02;
-import java.util.Collection;
-import java.util.Collections;
-import java.io.StringBufferInputStream;
-import java.util.ArrayList;
 
+/**
+ * Creating a new tribe for the "Wolves" nation to be utilized
+ *      in the WarringNations game. Extends Tribe.
+ */
 public class KimTribe extends Tribe
 {
+
+    /**
+     * Creates a new tribe in our world.
+     * @param nation The nation the tribe belongs to.
+     * @param tribe The tribe name.
+     * @param lifePoints Number of life points the tribe has total.
+     * @param numberOfPeoplePerTribe Number of members in the tribe.
+     */
     public KimTribe(String nation, String tribe, int lifePoints, int numberOfPeoplePerTribe)
     {
         super(nation, tribe, lifePoints, numberOfPeoplePerTribe);
         populateTribe();
     }
 
+    /**
+     * Overrides the populateTribe() method to add new members of
+     *      different classes (Warrior, Wizard, and Healer) to this
+     *      tribe. Prints the living members of the tribe.
+     */
     @Override
     public void populateTribe() {
-        members.add(new KimWarrior1(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
         members.add(new KimWarrior2(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
         members.add(new KimWizard1(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
-        members.add(new KimWizard2(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
-        members.add(new KimHealer1(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
         members.add(new KimHealer2(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
 
         for (int i = 0; i < members.size(); i++) {

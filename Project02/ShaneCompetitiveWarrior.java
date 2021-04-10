@@ -3,14 +3,33 @@ package Project02;
 import static Project02.PeopleType.warrior;
 //this warrior wants to be the best warrior of all. Does not help other warriors by sharing health. Will do more
 //damage to warriors.
+/**
+ * Creating a new Warrior for Shane's tribe/nation utilizing a self-made, unique
+ *         strategy that can be used in our WarringNations game.
+ *         Extends People.
+ */
 public class ShaneCompetitiveWarrior extends People {
 
+    /**
+     * From the extension of the People java class, we create a new warrior person.
+     * @param nation Nation Shane's warrior belongs to.
+     * @param tribe Tribe Shane's warrior belongs to.
+     * @param lifePoints Number of life points Shane's warrior has.
+     */
     public ShaneCompetitiveWarrior(String nation, String tribe, int lifePoints)
     {
         super(nation, tribe, warrior, lifePoints);
         myDescription = "\tShane Competitive Warrior";
     }
 
+    /**
+     * Individual strategies to influence how the game is played. This strategy determines
+     *       how this player interacts from people from other nations, their own nation,
+     *       and their own tribe.
+     * @param otherPerson The opponent player 1 is going against
+     * @return Life points to determine if this player runs away, how much to damage to
+     *       deal, or how much to heal.
+     */
     public int encounterStrategy(People otherPerson) {
         int lifePoints = 0;
         // opposing nation
