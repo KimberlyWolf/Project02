@@ -4,6 +4,8 @@ import Project02.PeopleType;
 
 import java.util.HashMap;
 
+import static Project02.PeopleType.*;
+
 public abstract class People
 {
     private String personName;
@@ -23,11 +25,18 @@ public abstract class People
         myTribe = tribe;
         me = person;
         myDescription = me.getDescription();
-        myLifePoints = lifePoints;
         dead = false;
+
+        // stats
+        myLifePoints = lifePoints;
         attack = baseAttack;
         defense = baseDefense;
+
+        // effectiveness
         effectiveness = new HashMap<PeopleType, Double>();
+        effectiveness.put(warrior, 1.0);
+        effectiveness.put(wizard, 1.0);
+        effectiveness.put(healer, 1.0);
     }
 
     public void setDead()
