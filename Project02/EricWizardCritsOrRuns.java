@@ -46,6 +46,11 @@ public class EricWizardCritsOrRuns extends People {
         else return true;
     }
 
+    @Override
+    public void interact(People people) {
+
+    }
+
 
 }
 

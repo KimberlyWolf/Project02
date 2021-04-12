@@ -18,6 +18,7 @@ public abstract class People
     private int defense;
     private boolean dead;
     protected HashMap<PeopleType, Double> effectiveness;
+    protected int interactionsLeft;
 
     public People(String nation, String tribe, PeopleType person, int lifePoints, int baseAttack, int baseDefense)
     {
@@ -87,6 +88,9 @@ public abstract class People
     public int getDefense()  { return defense; }
     public void setDefense(int desiredDefense) { defense = desiredDefense; }
 
+    public int getInteractionsLeft() { return interactionsLeft; }
+    public void reduceInteractionsLeft() { this.interactionsLeft--; }
+
     public double getEffectiveness(People otherPerson) {
         return this.effectiveness.get(otherPerson.getType());
     }
@@ -108,5 +112,6 @@ public abstract class People
         return result;
     }
 
+    public abstract void interact(People people);
 }
 

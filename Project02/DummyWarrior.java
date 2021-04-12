@@ -17,7 +17,7 @@ public class DummyWarrior extends People {
     public boolean shouldRunAway(Project02.People otherPerson) { return false; }
 
     @Override
-    public void interact(People otherPerson) {
+    public void interact(People people) {
 
     }
 }

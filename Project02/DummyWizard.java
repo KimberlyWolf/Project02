@@ -13,5 +13,10 @@ public class DummyWizard extends People {
     public int healingStrategy(Project02.People otherPerson) { return 0; }
     public double getEffectiveness(Project02.People otherPerson) { return 1.0; }
     public boolean shouldRunAway(Project02.People otherPerson) { return false; }
+
+    @Override
+    public void interact(People people) {
+
+    }
 }
 

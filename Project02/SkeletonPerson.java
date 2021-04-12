@@ -54,6 +54,11 @@ public class SkeletonPerson extends People {
         else return false;
     }
 
+    @Override
+    public void interact(People people) {
+
+    }
+
 
 }
 

@@ -52,6 +52,12 @@ public class EricHealerSelfDefense extends People {
         return false;
     }
 
+    // do nothing
+    @Override
+    public void interact(People people) {
+
+    }
+
 
 }
 

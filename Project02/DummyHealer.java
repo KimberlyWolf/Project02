@@ -14,5 +14,10 @@ public class DummyHealer extends People {
     public double getEffectiveness(Project02.People otherPerson) { return 1.0; }
     public boolean shouldRunAway(Project02.People otherPerson) { return false; }
 
+    @Override
+    public void interact(People people) {
+
+    }
+
 }
 

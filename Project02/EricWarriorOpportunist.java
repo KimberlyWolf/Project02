@@ -44,7 +44,7 @@ public class EricWarriorOpportunist extends People {
     }
 
     @Override
-    public void interact(People otherPerson) {
+    public void interact(People people) {
 
     }
 
