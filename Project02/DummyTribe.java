@@ -30,12 +30,12 @@ public class DummyTribe extends Tribe
      */
     @Override
     public void populateTribe() {
-        members.add(new DummyWarrior(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
-        members.add(new DummyWarrior(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
-        members.add(new DummyWizard(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
-        members.add(new DummyWizard(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
-        members.add(new DummyHealer(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
-        members.add(new DummyHealer(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe));
+        members.add(new DummyWarrior(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe, 10, 10));
+        members.add(new DummyWarrior(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe, 10, 10));
+        members.add(new DummyWizard(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe, 10, 10));
+        members.add(new DummyWizard(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe, 10, 10));
+        members.add(new DummyHealer(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe, 10, 10));
+        members.add(new DummyHealer(nationName, tribeName, tribeLifePoints/numberOfPeoplePerTribe, 10, 10));
 
         for (int i = 0; i < members.size(); i++) {
             livingMembers.add(members.get(i));

@@ -2,34 +2,23 @@ package Project02;
 
 import static Project02.PeopleType.*;
 
-/**
- * Testing Warrior character. Only meant for testing purposes.
- * Extends type People.
- */
 public class DummyWarrior extends People {
 
-    /**
-     * From the extension of the People java class, we create a new healer person.
-     * @param nation Nation Dummy belongs to.
-     * @param tribe Tribe Dummy belongs to.
-     * @param lifePoints Number of life points Dummy has.
-     */
-    public DummyWarrior(String nation, String tribe, int lifePoints)
+    public DummyWarrior(String nation, String tribe, int lifePoints, int attack, int defense)
     {
-        super(nation, tribe, warrior, lifePoints);
+        super(nation, tribe, warrior, lifePoints, attack, defense);
         myDescription = "\tDummy Warrior";
     }
 
-    /**
-     * Individual strategies to influence how the game is played. This strategy determines
-     *       how this player interacts from people from other nations, their own nation,
-     *       and their own tribe.
-     * @param otherPerson The opponent player 1 is going against
-     * @return Life points to determine if this player runs away, how much to damage to
-     *       deal, or how much to heal.
-     */
-    public int encounterStrategy(Project02.People otherPerson) { return 0; }
+    public int healingStrategy(Project02.People otherPerson) { return 0; }
+    @Override
+    public double getEffectiveness(Project02.People otherPerson) { return 1.0; }
+    @Override
+    public boolean shouldRunAway(Project02.People otherPerson) { return false; }
 
+    @Override
+    public void interact(People otherPerson) {
 
+    }
 }
 

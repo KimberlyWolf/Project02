@@ -100,9 +100,10 @@ public class World {
         int numberOfTribesPerNation = settings.getNumberOfTribesPerNation();
         int numberOfPeoplePerTribe = settings.getNumberOfPeoplePerTribe();
 
-        allNations.add(new KimNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
+        //allNations.add(new KimNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
         allNations.add(new EricNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
-        allNations.add(new ShaneNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
+        //allNations.add(new ShaneNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
+        allNations.add(new DummyNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
     }
 
 
@@ -190,17 +191,31 @@ public class World {
         int personOneLifePoints = worldCreatedPeople.get(personOne).getLifePoints();
         int personTwoLifePoints = worldCreatedPeople.get(personTwo).getLifePoints();
 
+        // decide who is healthier
         int moreHealthyPerson = personOneLifePoints > personTwoLifePoints ? personOne : personTwo;
         int lessHealthyPerson = personOneLifePoints > personTwoLifePoints ? personTwo : personOne;
+
+        // more healthy person shares using friendly strategies
+        int healthShared = worldCreatedPeople.get(moreHealthyPerson).healingStrategy(worldCreatedPeople.get(lessHealthyPerson));
+
+        // stop any person from exceeding maxhealth
+        int maxHealthAllowed = settings.getMaxHealthPerPerson();
+        int lessHealthyPersonLifePoints = worldCreatedPeople.get(lessHealthyPerson).getLifePoints();
+
+        // if greater than the max, use diff
+        if (lessHealthyPersonLifePoints + healthShared > maxHealthAllowed)
+            healthShared = maxHealthAllowed - lessHealthyPersonLifePoints;
 
         // readable references
         String giver = displayPersonInfo(moreHealthyPerson);
         String receiver = displayPersonInfo(lessHealthyPerson);
 
-        // more healthy person shares
-        int healthShared = worldCreatedPeople.get(moreHealthyPerson).encounterStrategy(worldCreatedPeople.get(lessHealthyPerson));
+        // inform players
         System.out.println(giver + " shares " + healthShared + " with "  + receiver);
-        worldCreatedPeople.get(lessHealthyPerson).modifyLifePoints(-healthShared); // negative
+        // apply heal
+        worldCreatedPeople.get(moreHealthyPerson).modifyLifePoints(-healthShared); // takes from more healthy
+        worldCreatedPeople.get(lessHealthyPerson).modifyLifePoints(healthShared); // to give to less healthy
+
     }
 
 
@@ -214,51 +229,74 @@ public class World {
         // random generator
         long seed = System.currentTimeMillis();
         Random random = new Random(seed);
-        int diceRoll = random.nextInt();
+        //int diceRoll = random.nextInt();
+
+        // Create a 10-sided die
+        Die die = new Die(10);
+        int diceRoll = die.roll();
 
         // attacker is person1 and defender is person2 if dice roll is even
         int attackerIndex = diceRoll%2==0 ? personOneWorldIndex : personTwoWorldIndex;
         int defenderIndex = diceRoll%2==0 ? personTwoWorldIndex : personOneWorldIndex;
 
         // init vars
-        int attackerHealthRisked, defenderHealthRisked;
         int attackerDamageDealt, defenderDamageDealt;
-        boolean attackerRanAway = false, defenderRanAway = false;
+        int attackerAttack, defenderDefense, defenderAttack, attackerDefense,
+            attackerAttackAmount, defenderDefenseAmount, defenderAttackAmount, attackerDefenseAmount;
+        double attackerEffectiveness, defenderEffectiveness;
+        boolean attackerRunsAway = false, defenderRunsAway = false;
 
         // readable references
         String attacker = displayPersonInfo(attackerIndex);
         String defender = displayPersonInfo(defenderIndex);
 
+        // game message
         System.out.println(attacker + " becomes attacker, and " + defender + " becomes defender.");
 
-        // attacker gets to decide if they want to run away before the encounter begins
-        attackerHealthRisked = worldCreatedPeople.get(attackerIndex).encounterStrategy(worldCreatedPeople.get(defenderIndex));
-        // if attacker runs away
-        if (attackerHealthRisked == 0) {
-            attackerRanAway = true;
+        // can move this code in later to prevent unnecessary code executing every time
+        // attacker stats
+        attackerAttack = worldCreatedPeople.get(attackerIndex).getAttack();
+        attackerDefense = worldCreatedPeople.get(attackerIndex).getDefense();
+        attackerEffectiveness = worldCreatedPeople.get(attackerIndex).getEffectiveness(worldCreatedPeople.get(defenderIndex));
+
+        // defender stats
+        defenderAttack = worldCreatedPeople.get(defenderIndex).getAttack();
+        defenderDefense = worldCreatedPeople.get(defenderIndex).getDefense();
+        defenderEffectiveness = worldCreatedPeople.get(defenderIndex).getEffectiveness(worldCreatedPeople.get(attackerIndex));
+
+        attackerRunsAway = worldCreatedPeople.get(attackerIndex).shouldRunAway(worldCreatedPeople.get(defenderIndex));
+        // attacker drives overall encounter
+        if (attackerRunsAway) {
+            // if attacker decides to run
+            // neither does damage to one another
             attackerDamageDealt = 0;
             defenderDamageDealt = 0;
         } else {
-            // otherwise, attacker stays and fights
-            defenderHealthRisked = worldCreatedPeople.get(defenderIndex).encounterStrategy(worldCreatedPeople.get(attackerIndex));
-            // if defender tries running away, defender risks zero health
-            if (defenderHealthRisked == 0){
-                defenderRanAway = true;
-                attackerDamageDealt = attackerHealthRisked; // attacker doesn't deal full damage if defender runs
-                defenderDamageDealt = defenderHealthRisked; // zero when running away
+            // otherwise, attacker stays and attacks defender
+            // defender can choose to run away
+            defenderRunsAway = worldCreatedPeople.get(defenderIndex).shouldRunAway(worldCreatedPeople.get(attackerIndex));
+
+            // if defender tries running away, defender doesnt get to defend against attacker
+            attackerAttackAmount = (int) Math.floor(die.roll() * attackerAttack * attackerEffectiveness);
+            if (defenderRunsAway) {
+                // defender takes reduced damage when running away
+                attackerDamageDealt = attackerAttackAmount/settings.getRunAwayDamageFactor();
+                // defender deals no damage when running away
+                defenderDamageDealt = 0; // zero when running away
+
             } else {
-                // otherwise, regular combat scenario
-                // at most, do 1.5x health risked
-                // at worst, do 0.5x health risked
-                // (these can be changed)
-                attackerDamageDealt = (int) (random.nextDouble()+0.5) * attackerHealthRisked;
-                defenderDamageDealt = (int) (random.nextDouble()+0.5) * defenderHealthRisked;
+                // if defender stays and fights, they get to defend, and also attack
+                attackerAttackAmount = (int) Math.floor(die.roll()*attackerAttack*attackerEffectiveness);
+                defenderDefenseAmount = (int) Math.floor(die.roll()*defenderDefense*defenderEffectiveness);
+                attackerDamageDealt = attackerAttackAmount - defenderDefenseAmount;
+
+                defenderAttackAmount = (int) Math.floor(die.roll()*defenderAttack*defenderEffectiveness);
+                attackerDefenseAmount = (int) Math.floor(die.roll()*attackerDefense*attackerEffectiveness);
+                defenderDamageDealt = defenderAttackAmount - attackerDefenseAmount;
             }
         }
         // deal damage
         // note the defender does not take full damage if running away
-        if (defenderRanAway) { attackerDamageDealt = attackerDamageDealt/settings.getRunAwayDamageFactor(); }
-
         System.out.println(attacker + " deals " + attackerDamageDealt + " to " + defender);
         worldCreatedPeople.get(attackerIndex).modifyLifePoints(-defenderDamageDealt);
         System.out.println(defender + " deals " + defenderDamageDealt +
@@ -266,13 +304,13 @@ public class World {
         worldCreatedPeople.get(defenderIndex).modifyLifePoints(-attackerDamageDealt);
 
         // penalties for running away applied after combat
-        if (attackerRanAway) {
+        if (attackerRunsAway) {
             // when attacker runs away, they lose one health, and defender gains one health
             System.out.println(attacker + " runs away, losing 1 life.");
             worldCreatedPeople.get(attackerIndex).modifyLifePoints(-1);
             System.out.println("Consequently, " + defender + " gains 1 life.");
             worldCreatedPeople.get(defenderIndex).modifyLifePoints(1);
-        } else if (defenderRanAway) {
+        } else if (defenderRunsAway) {
             System.out.println(defender + " runs away, losing 1 life.");
             worldCreatedPeople.get(defenderIndex).modifyLifePoints(-1);
             System.out.println("Consequently, " + attacker + " gains 1 life.");
