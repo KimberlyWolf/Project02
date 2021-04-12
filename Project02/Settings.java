@@ -1,7 +1,20 @@
 package Project02;
 
+/**
+ * This class is the inner workings of the WarringNations game. It keeps track of
+ * all the specifics of the game such as the number of rounds that can be played,
+ * the number of members per tribe and nation, the total number of life points, and
+ * much more.
+ */
 public class Settings {
 
+    /**
+     * Private variables that serve as the backbone of the settings class.
+     * These variables set up the game in such a way that allows for variability
+     * between each game. Variables include total number of life points per nation,
+     * max number of rounds, number of nations, number of tribes per nation,
+     * number of people per tribe, and more.
+     */
     private int maxRounds;
     private int maxHealthPerPerson;
     private int totalLifePointsPerNation;
@@ -12,9 +25,19 @@ public class Settings {
     private int minimumRequiredPeoplePerClass;
     private int runAwayDamageFactor;
 
+    /**
+     * Instantiates the settings for our game.
+     * @param maxRounds Maximum number of rounds
+     * @param maxHealthPerPerson Maximum life points a person can have at any time
+     * @param totalLifePointsPerNation Maximum number of life points per nation
+     * @param numberOfNations Number of nations present in the game
+     * @param numberOfTribesPerNation Number of tribes present in the game
+     * @param numberOfPeoplePerTribe Number of members in the tribe
+     * @param numberOfClasses Number of unique classes for each member
+     * @param runAwayDamageFactor How much damage one takes if they "run away" from an encounter
+     */
     public Settings(int maxRounds, int maxHealthPerPerson, int totalLifePointsPerNation, int numberOfNations, int numberOfTribesPerNation,
-                    int numberOfPeoplePerTribe, int numberOfClasses, int minimumRequiredPeoplePerClass, int
-                            runAwayDamageFactor)
+                    int numberOfPeoplePerTribe, int numberOfClasses, int runAwayDamageFactor)
     {
         this.maxRounds = maxRounds;
         this.maxHealthPerPerson = maxHealthPerPerson;
@@ -23,7 +46,6 @@ public class Settings {
         this.numberOfTribesPerNation = numberOfTribesPerNation;
         this.numberOfPeoplePerTribe = numberOfPeoplePerTribe;
         this.numberOfClasses = numberOfClasses;
-        this.minimumRequiredPeoplePerClass = minimumRequiredPeoplePerClass;
         this.runAwayDamageFactor = runAwayDamageFactor;
     }
 
