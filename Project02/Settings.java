@@ -152,4 +152,8 @@ public class Settings {
         this.runAwayDamageFactor = factor;
     }
 
+    /**
+     * @return The maximum health a person can have at any time.
+     */
+    public int getMaxHealthPerPerson() { return this.maxHealthPerPerson; }
 }
