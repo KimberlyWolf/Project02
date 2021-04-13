@@ -231,6 +231,7 @@ public class World {
         double attackerEffectiveness, defenderEffectiveness;
         boolean attackerRunsAway = false, defenderRunsAway = false;
         boolean attackerAlive = true, defenderAlive = true;
+        int maxHealth = settings.getMaxHealthPerPerson();
 
         // readable references
         String attacker = displayPersonInfo(attackerIndex);
@@ -254,13 +255,8 @@ public class World {
         defenderEffectiveness = worldCreatedPeople.get(defenderIndex).getEffectiveness(worldCreatedPeople.get(attackerIndex));
 
         attackerRunsAway = worldCreatedPeople.get(attackerIndex).shouldRunAway(worldCreatedPeople.get(defenderIndex));
-        // attacker drives overall encounter
-        if (attackerRunsAway) {
-            // if attacker decides to run
-            // neither does damage to one another
-            // todo run away statement
-            System.out.printf("%s (%d) runs away.", attacker, attackerLifePoints);
-        } else {
+        // attacker drives overall encounter and can choose to run
+        if (!attackerRunsAway) {
             // otherwise, attacker stays and attacks defender
             // defender can choose to run away
             defenderRunsAway = worldCreatedPeople.get(defenderIndex).shouldRunAway(worldCreatedPeople.get(attackerIndex));
@@ -335,12 +331,22 @@ public class World {
 
             System.out.printf("Consequently, %s (%d) gains 1 life.%n", defender, defenderLifePoints);
             worldCreatedPeople.get(defenderIndex).modifyLifePoints(1);
+            defenderLifePoints = worldCreatedPeople.get(defenderIndex).getLifePoints();
+            // apply cap
+            if (defenderLifePoints > maxHealth) {
+                worldCreatedPeople.get(defenderIndex).setLifePoints(maxHealth);
+            }
         } else if (defenderRunsAway && defenderAlive) {
             System.out.printf("%s (%d) runs away, losing 1 life.%n", defender, defenderLifePoints);
             worldCreatedPeople.get(defenderIndex).modifyLifePoints(-1);
 
             System.out.printf("Consequently, %s (%d) gains 1 life.%n", attacker, attackerLifePoints);
             worldCreatedPeople.get(attackerIndex).modifyLifePoints(1);
+            attackerLifePoints = worldCreatedPeople.get(attackerIndex).getLifePoints();
+            // apply cap
+            if (attackerLifePoints > maxHealth) {
+                worldCreatedPeople.get(attackerIndex).setLifePoints(maxHealth);
+            }
         }
         attackerLifePoints = worldCreatedPeople.get(attackerIndex).getLifePoints();
         defenderLifePoints = worldCreatedPeople.get(defenderIndex).getLifePoints();
