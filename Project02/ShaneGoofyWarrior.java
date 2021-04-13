@@ -5,6 +5,9 @@ import static Project02.PeopleType.*;
 public class ShaneGoofyWarrior extends People{
     /**
      * From the extension of the People java class, we create a new warrior person.
+     *      Implements what their default/base attack and defense, as well as their
+     *      effectiveness in terms of damaging an opposing player based on other player's
+     *      class.
      * @param nation Nation Shane's warrior belongs to.
      * @param tribe Tribe Shane's warrior belongs to.
      * @param lifePoints Number of life points Shane's warrior has.
@@ -20,12 +23,11 @@ public class ShaneGoofyWarrior extends People{
     }
 
     /**
-     * Individual strategies to influence how the game is played. This strategy determines
-     *       how this player interacts from people from other nations, their own nation,
-     *       and their own tribe.
-     * @param otherPerson The opponent player 1 is going against
-     * @return Life points to determine if this player runs away, how much to damage to
-     *       deal, or how much to heal.
+     * An individually created strategy that determines how much points this player is
+     *      willing to give to heal during a friendly encounter. The number of life points
+     *      can vary if the players are from the same tribe or not.
+     * @param otherPerson Opposing player from same Nation
+     * @return The number of life points this player should give to heal a friendly player
      */
     public int healingStrategy(Project02.People otherPerson) {
         int lifePoints = 0;
@@ -48,6 +50,12 @@ public class ShaneGoofyWarrior extends People{
         return lifePoints;
     }
 
+    /**
+     * Checks whether this player should run away in an encounter or not based on the player's
+     *      created strategy.
+     * @param otherPerson Opposing Player
+     * @return True if the player should run away
+     */
     @Override
     // only fight wizards if strong advantage and fight warriors at any advantage
     // is strangely afraid of healers with more health
@@ -57,6 +65,10 @@ public class ShaneGoofyWarrior extends People{
                 || (otherPerson.getType() == healer && otherPerson.getLifePoints() > this.getLifePoints()));
     }
 
+    /**
+     * This is only used for special characters. Nothing should be added here.
+     * @param people Player in world
+     */
     // NOT an npc character, is not used here
     @Override
     public void interact(People people) {
