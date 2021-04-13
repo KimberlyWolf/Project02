@@ -17,7 +17,8 @@ public class World {
     {
         // seed for psuedo-random number generator
         this.settings = settings;
-        this.worldLifePoints = settings.getTotalLifePointsPerNation() * this.settings.getNumberOfNations();
+        this.worldLifePoints = settings.getBaseHealthPerPerson() * this.settings.getNumberOfNations()
+                * this.settings.getNumberOfTribesPerNation() * this.settings.getNumberOfPeoplePerTribe();
         this.numberOfRounds = this.settings.getMaxRounds();
         Date seed = new Date();
         generator = new Random(seed.getTime());
@@ -68,14 +69,14 @@ public class World {
 
     public void createWorld()
     {
-        int lifePointsPerNation = settings.getTotalLifePointsPerNation();
+        int baseHealthPerPerson = settings.getBaseHealthPerPerson();
         int numberOfTribesPerNation = settings.getNumberOfTribesPerNation();
         int numberOfPeoplePerTribe = settings.getNumberOfPeoplePerTribe();
 
-        //allNations.add(new KimNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
-        allNations.add(new EricNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
+        //allNations.add(new KimNation(baseHealthPerPerson, numberOfTribesPerNation, numberOfPeoplePerTribe));
+        allNations.add(new EricNation(baseHealthPerPerson, numberOfTribesPerNation, numberOfPeoplePerTribe));
         //allNations.add(new ShaneNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
-        allNations.add(new DummyNation(lifePointsPerNation, numberOfTribesPerNation, numberOfPeoplePerTribe));
+        allNations.add(new DummyNation(baseHealthPerPerson, numberOfTribesPerNation, numberOfPeoplePerTribe));
     }
 
 
@@ -138,7 +139,10 @@ public class World {
         // Announces encounter
         String personOneDescription = displayPersonInfo(personOne);
         String personTwoDescription = displayPersonInfo(personTwo);
-        System.out.println("Encounter: " + personOneDescription + " encounters " + personTwoDescription);
+        int personOneHealth = worldCreatedPeople.get(personOne).getLifePoints();
+        int personTwoHealth = worldCreatedPeople.get(personTwo).getLifePoints();
+        System.out.printf("ENCOUNTER: %s (%d) encounters %s (%d)%n", personOneDescription, personOneHealth,
+                personTwoDescription, personTwoHealth);
 
         // Determine friendly or hostile encounter based on same nation or not
         String personOneNation = worldCreatedPeople.get(personOne).getNation();
@@ -177,8 +181,10 @@ public class World {
 
         // stop any person from exceeding maxhealth
         int maxHealthAllowed = settings.getMaxHealthPerPerson();
+        int moreHealthyPersonLifePoints = worldCreatedPeople.get(moreHealthyPerson).getLifePoints();
         int lessHealthyPersonLifePoints = worldCreatedPeople.get(lessHealthyPerson).getLifePoints();
 
+        // TODO: bug here?
         // if greater than the max, use diff
         if (lessHealthyPersonLifePoints + healthShared > maxHealthAllowed)
             healthShared = maxHealthAllowed - lessHealthyPersonLifePoints;
@@ -188,20 +194,28 @@ public class World {
         String receiver = displayPersonInfo(lessHealthyPerson);
 
         // inform players
-        System.out.println(giver + " shares " + healthShared + " with "  + receiver);
+        System.out.printf("PEACEFUL ENCOUNTER: %s (%d) shares %d with %s (%d)%n", giver, moreHealthyPersonLifePoints, healthShared,
+                receiver, lessHealthyPersonLifePoints);
         // apply heal
         worldCreatedPeople.get(moreHealthyPerson).modifyLifePoints(-healthShared); // takes from more healthy
         worldCreatedPeople.get(lessHealthyPerson).modifyLifePoints(healthShared); // to give to less healthy
+
+        if (worldCreatedPeople.get(moreHealthyPerson).getLifePoints() > maxHealthAllowed)
+            worldCreatedPeople.get(moreHealthyPerson).setLifePoints(maxHealthAllowed);
+        if (worldCreatedPeople.get(lessHealthyPerson).getLifePoints() > maxHealthAllowed)
+            worldCreatedPeople.get(lessHealthyPerson).setLifePoints(maxHealthAllowed);
+
+        // Update values after
+        moreHealthyPersonLifePoints = worldCreatedPeople.get(moreHealthyPerson).getLifePoints();
+        lessHealthyPersonLifePoints = worldCreatedPeople.get(lessHealthyPerson).getLifePoints();
+
+        System.out.printf("%s now has %d health after sharing.%n", giver, moreHealthyPersonLifePoints);
+        System.out.printf("%s now has %d health after being shared with.%n", receiver, lessHealthyPersonLifePoints);
 
     }
 
 
     public void encounterHostile(int personOneWorldIndex, int personTwoWorldIndex) {
-        // random generator
-        long seed = System.currentTimeMillis();
-        Random random = new Random(seed);
-        //int diceRoll = random.nextInt();
-
         // Create a 10-sided die
         Die die = new Die(10);
         int diceRoll = die.roll();
@@ -216,13 +230,17 @@ public class World {
             attackerAttackAmount, defenderDefenseAmount, defenderAttackAmount, attackerDefenseAmount;
         double attackerEffectiveness, defenderEffectiveness;
         boolean attackerRunsAway = false, defenderRunsAway = false;
+        boolean attackerAlive = true, defenderAlive = true;
 
         // readable references
         String attacker = displayPersonInfo(attackerIndex);
         String defender = displayPersonInfo(defenderIndex);
+        int attackerLifePoints = worldCreatedPeople.get(attackerIndex).getLifePoints();
+        int defenderLifePoints = worldCreatedPeople.get(defenderIndex).getLifePoints();
 
         // game message
-        System.out.println(attacker + " becomes attacker, and " + defender + " becomes defender.");
+        System.out.printf("HOSTILE ENCOUNTER: %s (%d) becomes attacker and %s (%d) becomes defender%n", attacker, attackerLifePoints,
+                defender, defenderLifePoints);
 
         // can move this code in later to prevent unnecessary code executing every time
         // attacker stats
@@ -240,54 +258,93 @@ public class World {
         if (attackerRunsAway) {
             // if attacker decides to run
             // neither does damage to one another
-            attackerDamageDealt = 0;
-            defenderDamageDealt = 0;
+            // todo run away statement
+            System.out.printf("%s (%d) runs away.", attacker, attackerLifePoints);
         } else {
             // otherwise, attacker stays and attacks defender
             // defender can choose to run away
             defenderRunsAway = worldCreatedPeople.get(defenderIndex).shouldRunAway(worldCreatedPeople.get(attackerIndex));
 
             // if defender tries running away, defender doesnt get to defend against attacker
-            attackerAttackAmount = (int) Math.floor(die.roll() * attackerAttack * attackerEffectiveness);
+            int attackerRoll = die.roll();
+            System.out.printf("%s rolls a %d%n", attacker, attackerRoll);
+            attackerAttackAmount = (int) Math.floor(attackerRoll * attackerAttack * attackerEffectiveness);
+
             if (defenderRunsAway) {
                 // defender takes reduced damage when running away
-                attackerDamageDealt = attackerAttackAmount/settings.getRunAwayDamageFactor();
-                // defender deals no damage when running away
-                defenderDamageDealt = 0; // zero when running away
+                System.out.printf("%s (%d) tries to run away.", defender, defenderLifePoints);
+                attackerDamageDealt = attackerAttackAmount / settings.getRunAwayDamageFactor();
+                System.out.printf("%s (%d) deals %d damage to %s (%d) while running away.%n", attacker,
+                        attackerLifePoints, attackerDamageDealt, defender, defenderLifePoints);
+                worldCreatedPeople.get(defenderIndex).modifyLifePoints(-attackerDamageDealt);
+
+                // Update health after combat
+                defenderLifePoints = worldCreatedPeople.get(defenderIndex).getLifePoints();
+                defenderAlive = worldCreatedPeople.get(defenderIndex).isPersonAlive();
 
             } else {
                 // if defender stays and fights, they get to defend, and also attack
-                attackerAttackAmount = (int) Math.floor(die.roll()*attackerAttack*attackerEffectiveness);
-                defenderDefenseAmount = (int) Math.floor(die.roll()*defenderDefense*defenderEffectiveness);
-                attackerDamageDealt = attackerAttackAmount - defenderDefenseAmount;
+                int defenderRoll = die.roll();
+                defenderDefenseAmount = (int) Math.floor(defenderRoll * defenderDefense * defenderEffectiveness);
+                System.out.printf("%s rolls a %d%n", defender, defenderRoll);
+                // attacker attacks first
+                if (attackerAttackAmount >= defenderDefenseAmount)
+                    attackerDamageDealt = attackerAttackAmount - defenderDefenseAmount;
+                else
+                    // todo: successfully defended msg?
+                    attackerDamageDealt = 0;
+                System.out.printf("%s (%d) deals %d damage to %s (%d).%n", attacker, attackerLifePoints, attackerDamageDealt,
+                        defender, defenderLifePoints);
+                worldCreatedPeople.get(defenderIndex).modifyLifePoints(-attackerDamageDealt);
 
-                defenderAttackAmount = (int) Math.floor(die.roll()*defenderAttack*defenderEffectiveness);
-                attackerDefenseAmount = (int) Math.floor(die.roll()*attackerDefense*attackerEffectiveness);
-                defenderDamageDealt = defenderAttackAmount - attackerDefenseAmount;
+                // Update health and check if dead after combat
+                defenderLifePoints = worldCreatedPeople.get(defenderIndex).getLifePoints();
+                if (defenderLifePoints < 0) {
+                    worldCreatedPeople.get(defenderIndex).setLifePoints(0);
+                }
+                defenderAlive = worldCreatedPeople.get(defenderIndex).isPersonAlive();
+
+                // Defender deals damage back
+                if (defenderAlive) {
+                    defenderAttackAmount = (int) Math.floor(die.roll() * defenderAttack * defenderEffectiveness);
+                    attackerDefenseAmount = (int) Math.floor(die.roll() * attackerDefense * attackerEffectiveness);
+                    if (defenderAttackAmount >= attackerDefenseAmount)
+                        defenderDamageDealt = defenderAttackAmount - attackerDefenseAmount;
+                    else
+                        defenderDamageDealt = 0;
+                    System.out.printf("%s (%d) deals %d damage to %s (%d).%n", defender, defenderLifePoints,
+                            defenderDamageDealt, attacker, attackerLifePoints);
+                    worldCreatedPeople.get(defenderIndex).modifyLifePoints(-attackerDamageDealt);
+
+                    // Update health and check if dead after combat
+                    attackerLifePoints = worldCreatedPeople.get(attackerIndex).getLifePoints();
+                    if (attackerLifePoints < 0) {
+                        worldCreatedPeople.get(attackerIndex).setLifePoints(0);
+                    }
+                    attackerAlive = worldCreatedPeople.get(attackerIndex).isPersonAlive();
+                }
             }
         }
         // deal damage
         // note the defender does not take full damage if running away
-        System.out.println(attacker + " deals " + attackerDamageDealt + " to " + defender);
-        worldCreatedPeople.get(attackerIndex).modifyLifePoints(-defenderDamageDealt);
-        System.out.println(defender + " deals " + defenderDamageDealt +
-                " to " + attacker);
-        worldCreatedPeople.get(defenderIndex).modifyLifePoints(-attackerDamageDealt);
-
-        // penalties for running away applied after combat
+        // TODO: in progress
         if (attackerRunsAway) {
             // when attacker runs away, they lose one health, and defender gains one health
-            System.out.println(attacker + " runs away, losing 1 life.");
+            System.out.printf("%s (%d) runs away, losing 1 life.%n", attacker, attackerLifePoints);
             worldCreatedPeople.get(attackerIndex).modifyLifePoints(-1);
-            System.out.println("Consequently, " + defender + " gains 1 life.");
+
+            System.out.printf("Consequently, %s (%d) gains 1 life.%n", defender, defenderLifePoints);
             worldCreatedPeople.get(defenderIndex).modifyLifePoints(1);
-        } else if (defenderRunsAway) {
-            System.out.println(defender + " runs away, losing 1 life.");
+        } else if (defenderRunsAway && defenderAlive) {
+            System.out.printf("%s (%d) runs away, losing 1 life.%n", defender, defenderLifePoints);
             worldCreatedPeople.get(defenderIndex).modifyLifePoints(-1);
-            System.out.println("Consequently, " + attacker + " gains 1 life.");
+
+            System.out.printf("Consequently, %s (%d) gains 1 life.%n", attacker, attackerLifePoints);
             worldCreatedPeople.get(attackerIndex).modifyLifePoints(1);
         }
-
+        attackerLifePoints = worldCreatedPeople.get(attackerIndex).getLifePoints();
+        defenderLifePoints = worldCreatedPeople.get(defenderIndex).getLifePoints();
+        System.out.printf("POST-ENCOUNTER SUMMARY: %s (%d) \t %s (%d).%n", attacker, attackerLifePoints, defender, defenderLifePoints);
         // aging not mentioned in client requirements and has been removed
     }
 

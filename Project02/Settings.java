@@ -17,31 +17,29 @@ public class Settings {
      */
     private int maxRounds;
     private int maxHealthPerPerson;
-    private int totalLifePointsPerNation;
+    private int baseHealthPerPerson;
     private int numberOfNations;
     private int numberOfTribesPerNation;
     private int numberOfPeoplePerTribe;
     private int numberOfClasses;
-    private int minimumRequiredPeoplePerClass;
     private int runAwayDamageFactor;
 
     /**
      * Instantiates the settings for our game.
      * @param maxRounds Maximum number of rounds
-     * @param maxHealthPerPerson Maximum life points a person can have at any time
-     * @param totalLifePointsPerNation Maximum number of life points per nation
+     * @param baseHealthPerPerson Base number of life points per person
      * @param numberOfNations Number of nations present in the game
      * @param numberOfTribesPerNation Number of tribes present in the game
      * @param numberOfPeoplePerTribe Number of members in the tribe
      * @param numberOfClasses Number of unique classes for each member
      * @param runAwayDamageFactor How much damage one takes if they "run away" from an encounter
      */
-    public Settings(int maxRounds, int maxHealthPerPerson, int totalLifePointsPerNation, int numberOfNations, int numberOfTribesPerNation,
+    public Settings(int maxRounds, int baseHealthPerPerson, int maxHealthPerPerson, int numberOfNations, int numberOfTribesPerNation,
                     int numberOfPeoplePerTribe, int numberOfClasses, int runAwayDamageFactor)
     {
         this.maxRounds = maxRounds;
+        this.baseHealthPerPerson = baseHealthPerPerson;
         this.maxHealthPerPerson = maxHealthPerPerson;
-        this.totalLifePointsPerNation = totalLifePointsPerNation;
         this.numberOfNations = numberOfNations;
         this.numberOfTribesPerNation = numberOfTribesPerNation;
         this.numberOfPeoplePerTribe = numberOfPeoplePerTribe;
@@ -67,17 +65,22 @@ public class Settings {
     /**
      * @return Total number of life points per each nation
      */
-    public int getTotalLifePointsPerNation() {
-        return this.totalLifePointsPerNation;
+    public int getBaseHealthPerPerson() {
+        return this.baseHealthPerPerson;
     }
 
     /**
      * Sets the number of life points per nation to the parameter points.
      * @param points Number of points we want each nation to have
      */
-    public void setTotalLifePointsPerNation(int points) {
-        this.totalLifePointsPerNation = points;
+    public void setBaseHealthPerPerson(int points) {
+        this.baseHealthPerPerson = points;
     }
+
+    /**
+     * @return The maximum health a person can have at any time.
+     */
+    public int getMaxHealthPerPerson() { return this.maxHealthPerPerson; }
 
     /**
      * @return Total number of nations
@@ -152,8 +155,4 @@ public class Settings {
         this.runAwayDamageFactor = factor;
     }
 
-    /**
-     * @return The maximum health a person can have at any time.
-     */
-    public int getMaxHealthPerPerson() { return this.maxHealthPerPerson; }
 }

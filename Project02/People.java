@@ -102,6 +102,8 @@ public abstract class People
     {
         myLifePoints += points;
     }
+    /** Sets the person's life points to a specific value. */
+    public void setLifePoints(int desired) { myLifePoints = desired; }
 
     /** Returns this person's attack stat */
     public int getAttack()  { return attack; }
