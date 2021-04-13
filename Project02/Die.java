@@ -18,6 +18,7 @@ public class Die {
     }
 
     public int roll() {
+        System.out.println("Let's roll the " + diceSides + " sided die!");
         return diceRoller.nextInt(diceSides)+1; // shift bounds up by 1 to include sides
     }
 }

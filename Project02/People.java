@@ -129,6 +129,8 @@ public abstract class People
     public abstract boolean shouldRunAway(People otherPerson);
 
     // For special characters only
+    /** Sets remaining interactions a special character has */
+    public void setInteractionsLeft(int interactionsLeft) { this.interactionsLeft = interactionsLeft; }
     /** Returns how many remaining interactions a special character has before being removed */
     public int getInteractionsLeft() { return interactionsLeft; }
     /** Reduces how many remaining interactions a special character has by one */

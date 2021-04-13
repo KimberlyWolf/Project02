@@ -153,7 +153,7 @@ public class World {
     }
 
     private void encounterSpecial(int personRegular, int personSpecial) {
-        worldCreatedPeople.get(personSpecial).reduceInteractionsLeft();
+//        worldCreatedPeople.get(personSpecial).reduceInteractionsLeft();
         worldCreatedPeople.get(personSpecial).interact(worldCreatedPeople.get(personRegular));
 
         if (worldCreatedPeople.get(personSpecial).getInteractionsLeft() == 0) {

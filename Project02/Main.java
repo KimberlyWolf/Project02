@@ -7,10 +7,11 @@ public class Main
      */
     public static void main(String[] args)
     {
-        //Sandbox testArea = new Sandbox();
+        Sandbox testArea = new Sandbox();
+        testArea.testBodyBuilder();
         //testArea.testDieRollIsWithinBounds();
         //return;
-        PlayGame game = new PlayGame();
+//        PlayGame game = new PlayGame();
     }
 
 
