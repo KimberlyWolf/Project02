@@ -10,12 +10,12 @@ public class ShaneTribe extends Tribe
      * Creates a new tribe in our world.
      * @param nation The nation the tribe belongs to.
      * @param tribe The tribe name.
-     * @param lifePoints Number of life points the tribe has total.
+     * @param baseHealthPerPerson Number of life points the tribe has total.
      * @param numberOfPeoplePerTribe Number of members in the tribe.
      */
-    public ShaneTribe(String nation, String tribe, int lifePoints, int numberOfPeoplePerTribe)
+    public ShaneTribe(String nation, String tribe, int baseHealthPerPerson, int numberOfPeoplePerTribe)
     {
-        super(nation, tribe, lifePoints, numberOfPeoplePerTribe);
+        super(nation, tribe, baseHealthPerPerson, numberOfPeoplePerTribe);
         populateTribe();
     }
 

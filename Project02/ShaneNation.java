@@ -29,7 +29,7 @@ public class ShaneNation extends Nation
     public void populateNation() {
         for(int i = 1; i < numberOfTribes + 1; i++)
         {
-            tribes.add(new ShaneTribe(nationName, "Tribe" + i, nationLifePoints/numberOfTribes,
+            tribes.add(new ShaneTribe(nationName, "Tribe" + i, nationLifePoints/numberOfTribes/peoplePerTribe,
                     peoplePerTribe));
         }
     }
