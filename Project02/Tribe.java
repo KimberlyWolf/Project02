@@ -28,14 +28,14 @@ public abstract class Tribe
      * Instantiates a new Tribe for our WarringNations game
      * @param nation Nation name
      * @param tribe Tribe name
-     * @param lifePoints Number of life points for the tribe
+     * @param baseHealthPerPerson Number of life points per person in the tribe
      * @param peoplePerTribe Number of people in the tribe
      */
-    public Tribe(String nation, String tribe, int lifePoints, int peoplePerTribe)
+    public Tribe(String nation, String tribe, int baseHealthPerPerson, int peoplePerTribe)
     {
         nationName = nation;
         tribeName = tribe;
-        tribeLifePoints = lifePoints;
+        tribeLifePoints = baseHealthPerPerson * peoplePerTribe;
         numberOfPeoplePerTribe = peoplePerTribe;
     }
 
@@ -54,7 +54,6 @@ public abstract class Tribe
             {
                 livingMembers.add(members.get(person));
                 tribeLifePoints += members.get(person).getLifePoints();
-                //System.out.println(members.get(person));
             }
             else
             {

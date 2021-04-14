@@ -3,26 +3,28 @@ package Project02;
 import static Project02.PeopleType.*;
 
 /**
- * Creating a new Healer for Shane's tribe/nation utilizing a self-made, unique
+ * Creating a new Healer for Kim's tribe/nation utilizing a self-made, unique
  *         strategy that can be used in our WarringNations game.
  *         Extends People.
- * This healer runs from fights where people have more health than him unless its another healer.
  */
-public class ShaneCowardHealer extends People {
+public class KimWarrior extends People {
 
     /**
-     * From the extension of the People java class, we create a new healer person.
+     * From the extension of the People java class, we create a new warrior person.
      *      Implements what their default/base attack and defense, as well as their
      *      effectiveness in terms of damaging an opposing player based on other player's
      *      class.
-     * @param nation Nation Shane's healer belongs to.
-     * @param tribe Tribe Shane's healer belongs to.
-     * @param lifePoints Number of life points Shane's healer has.
+     * @param nation Nation Kim's warrior belongs to.
+     * @param tribe Tribe Kim's warrior belongs to.
+     * @param lifePoints Number of life points Kim's warrior has.
      */
-    public ShaneCowardHealer(String nation, String tribe, int lifePoints)
+    public KimWarrior(String nation, String tribe, int lifePoints)
     {
-        super(nation, tribe, healer, lifePoints, 10, 10);
-        myDescription = "\tShane Coward Healer";
+        super(nation, tribe, warrior, lifePoints, 10, 10);
+        myDescription = "\tKim Warrior";
+        this.setEffectiveness(warrior, 1.0);
+        this.setEffectiveness(wizard, 1.25);
+        this.setEffectiveness(healer, 1.75);
     }
 
     /**
@@ -37,32 +39,16 @@ public class ShaneCowardHealer extends People {
 
         // same tribe
         if (this.getTribe().equals(otherPerson.getTribe())) {
-            // share health only if have more than friend
-            if (this.getLifePoints() > otherPerson.getLifePoints()) {
-                switch (otherPerson.getType()) {
-                    case warrior:
-                    case wizard:
-                    case healer:
-                        lifePoints = this.getLifePoints() - otherPerson.getLifePoints();
-                        break;
-                    default:
-                        break;
-                }
-            }
+            // always share enough with own tribe to bring their health up to yours
+            if (this.getLifePoints() > otherPerson.getLifePoints())
+                lifePoints = (this.getLifePoints() - otherPerson.getLifePoints())/2;
         }
         // different tribe
         else {
             // more health than friendly
             if (this.getLifePoints() > otherPerson.getLifePoints()) {
-                switch (otherPerson.getType()) {
-                    case warrior:
-                    case wizard:
-                    case healer:
-                        lifePoints = this.getLifePoints() - otherPerson.getLifePoints();
-                        break;
-                    default:
-                        break;
-                }
+                if (this.getLifePoints() > 1.5 * otherPerson.getLifePoints())
+                    lifePoints = (this.getLifePoints() - otherPerson.getLifePoints())/2;
             }
         }
 
@@ -77,8 +63,8 @@ public class ShaneCowardHealer extends People {
      */
     @Override
     public boolean shouldRunAway(People otherPerson) {
-
-        return otherPerson.getLifePoints() > this.getLifePoints() && otherPerson.getType()!= healer;
+        return ((otherPerson.getType() == warrior && otherPerson.getLifePoints() > this.getLifePoints()) ||
+            (otherPerson.getType() == wizard && otherPerson.getLifePoints() > 1.7234 * this.getLifePoints()));
     }
 
     /**
@@ -93,4 +79,5 @@ public class ShaneCowardHealer extends People {
 
 
 }
+
 

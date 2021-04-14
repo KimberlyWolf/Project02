@@ -3,26 +3,25 @@ package Project02;
 import static Project02.PeopleType.*;
 
 /**
- * Creating a new Healer for Shane's tribe/nation utilizing a self-made, unique
+ * Creating a new Healer for Kim's tribe/nation utilizing a self-made, unique
  *         strategy that can be used in our WarringNations game.
  *         Extends People.
- * This healer runs from fights where people have more health than him unless its another healer.
  */
-public class ShaneCowardHealer extends People {
+public class KimHealer extends People {
 
     /**
      * From the extension of the People java class, we create a new healer person.
      *      Implements what their default/base attack and defense, as well as their
      *      effectiveness in terms of damaging an opposing player based on other player's
      *      class.
-     * @param nation Nation Shane's healer belongs to.
-     * @param tribe Tribe Shane's healer belongs to.
-     * @param lifePoints Number of life points Shane's healer has.
+     * @param nation Nation Kim's Healer belongs to.
+     * @param tribe Tribe Kim's Healer belongs to.
+     * @param lifePoints Number of life points Kim's Healer has.
      */
-    public ShaneCowardHealer(String nation, String tribe, int lifePoints)
+    public KimHealer(String nation, String tribe, int lifePoints)
     {
         super(nation, tribe, healer, lifePoints, 10, 10);
-        myDescription = "\tShane Coward Healer";
+        myDescription = "\tKim Healer";
     }
 
     /**
@@ -41,7 +40,11 @@ public class ShaneCowardHealer extends People {
             if (this.getLifePoints() > otherPerson.getLifePoints()) {
                 switch (otherPerson.getType()) {
                     case warrior:
+                        lifePoints = (this.getLifePoints() - otherPerson.getLifePoints()) / 4;
+                        break;
                     case wizard:
+                        lifePoints = (this.getLifePoints() - otherPerson.getLifePoints()) / 2;
+                        break;
                     case healer:
                         lifePoints = this.getLifePoints() - otherPerson.getLifePoints();
                         break;
@@ -56,7 +59,11 @@ public class ShaneCowardHealer extends People {
             if (this.getLifePoints() > otherPerson.getLifePoints()) {
                 switch (otherPerson.getType()) {
                     case warrior:
+                        lifePoints = (this.getLifePoints() - otherPerson.getLifePoints()) / 4;
+                        break;
                     case wizard:
+                        lifePoints = (this.getLifePoints() - otherPerson.getLifePoints()) / 2;
+                        break;
                     case healer:
                         lifePoints = this.getLifePoints() - otherPerson.getLifePoints();
                         break;
@@ -68,7 +75,6 @@ public class ShaneCowardHealer extends People {
 
         return lifePoints;
     }
-
     /**
      * Checks whether this player should run away in an encounter or not based on the player's
      *      created strategy.
@@ -77,8 +83,9 @@ public class ShaneCowardHealer extends People {
      */
     @Override
     public boolean shouldRunAway(People otherPerson) {
-
-        return otherPerson.getLifePoints() > this.getLifePoints() && otherPerson.getType()!= healer;
+        return ((otherPerson.getType() == warrior && otherPerson.getLifePoints() > this.getLifePoints()) ||
+                (otherPerson.getType() == wizard && otherPerson.getLifePoints() > this.getLifePoints())
+                || (otherPerson.getType() == healer && otherPerson.getLifePoints() > 1.25 * this.getLifePoints()));
     }
 
     /**

@@ -38,14 +38,14 @@ public abstract class Nation
     /**
      * Instantiates a new Nation to be put into our game world.
      * @param name The name of the Nation.
-     * @param lifePoints The number of life points the nation has.
+     * @param baseHealthPerPerson The number of life points one person has.
      * @param tribeCount The number of tribes in the nation.
      * @param numberOfPeoplePerTribe The number of members in the tribe.
      */
-    public Nation(String name, int lifePoints, int tribeCount, int numberOfPeoplePerTribe)
+    public Nation(String name, int baseHealthPerPerson, int tribeCount, int numberOfPeoplePerTribe)
     {
         nationName = name;
-        nationLifePoints = lifePoints;
+        nationLifePoints = baseHealthPerPerson * numberOfPeoplePerTribe * tribeCount;
         numberOfTribes = tribeCount;
         peoplePerTribe = numberOfPeoplePerTribe;
     }
