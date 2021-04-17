@@ -7,22 +7,26 @@ import static Project02.PeopleType.*;
 /**
  * Creating a new special npc to interact with people in the world
  *         Will have a unique interaction from other people types.
- * This Black Smith will increase the defense of someone they meet.
+ * This Body Builder will increase the attack of someone they meet.
  */
 public class BodyBuilder extends People {
 
     /**
-     * Constructor for an npc Black Smith
+     * Constructor for an npc Body Builder
      */
     public BodyBuilder()
     {
-        super("Planet Fitness", "Gym Sharks", special, 100, 10, 10);
+        super("Planet Fitness", "Gym Sharks", special, 2, 10, 10);
         setInteractionsLeft(2);
         myDescription = "\tBody Builder";
     }
 
 
-    // NOT an npc, won't be used here
+    /**
+     * This method will increase the player's attack by using the dice mechanic. The player will receive
+     *      one to twenty points added to their attack statistic.
+     * @param people Player who encounters the Body Builder
+     */
     @Override
     public void interact(People people) {
         Die die = new Die(20);
@@ -35,12 +39,22 @@ public class BodyBuilder extends People {
 
     }
 
+    /**
+     * This method will not be used by special characters and artifacts!
+     * @param otherPerson Opposing player
+     * @return Integer value of how much health is being given
+     */
     //npc wont be using these methods
     @Override
     public int healingStrategy(People otherPerson) {
         return 0;
     }
 
+    /**
+     * This method will not be used by special characters and artifacts!
+     * @param otherPerson Opposing player
+     * @return False because special characters never run away.
+     */
     @Override
     public boolean shouldRunAway(People otherPerson) {
         return false;

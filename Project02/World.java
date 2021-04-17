@@ -101,9 +101,9 @@ public class World {
         int numberOfTribesPerNation = settings.getNumberOfTribesPerNation();
         int numberOfPeoplePerTribe = settings.getNumberOfPeoplePerTribe();
 
-        allNations.add(new KimNation(baseHealthPerPerson, numberOfTribesPerNation, numberOfPeoplePerTribe));
         allNations.add(new EricNation(baseHealthPerPerson, numberOfTribesPerNation, numberOfPeoplePerTribe));
         allNations.add(new ShaneNation(baseHealthPerPerson, numberOfTribesPerNation, numberOfPeoplePerTribe));
+        allNations.add(new KimNation(baseHealthPerPerson, numberOfTribesPerNation, numberOfPeoplePerTribe));
     }
 
     /**
@@ -117,6 +117,13 @@ public class World {
         for(int nation = 0; nation < allNations.size(); nation++)
             livingPeople.addAll(allNations.get(nation).getNationPopulation());
         //System.out.println(livingPeople);
+
+        //TODO: Add Special Characters --> It'll always end in stalemate.
+        // They aren't being removed from the world after two encounters
+        livingPeople.add(new BlackSmith());
+        livingPeople.add(new BodyBuilder());
+        livingPeople.add(new GrimReaper());
+        livingPeople.add(new MysteriousPotion());
         return livingPeople;
     }
 
@@ -205,6 +212,7 @@ public class World {
     private void encounterSpecial(int personRegular, int personSpecial) {
 //        worldCreatedPeople.get(personSpecial).reduceInteractionsLeft();
         worldCreatedPeople.get(personSpecial).interact(worldCreatedPeople.get(personRegular));
+        worldCreatedPeople.get(personSpecial).setLifePoints(worldCreatedPeople.get(personSpecial).getLifePoints() - 1);
 
         if (worldCreatedPeople.get(personSpecial).getInteractionsLeft() == 0) {
             worldCreatedPeople.get(personSpecial).setDead();

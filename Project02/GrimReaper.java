@@ -11,33 +11,44 @@ import static Project02.PeopleType.*;
 public class GrimReaper extends People {
 
     /**
-     * From the extension of the People java class, we create a new wizard person.
-     * @param nation Nation Shane's wizard belongs to.
-     * @param tribe Tribe Shane's wizard belongs to.
-     * @param lifePoints Number of life points Shane's wizard has.
+     * Constructor for the special character: Grim Reaper
      */
-    public GrimReaper(String nation, String tribe, int lifePoints)
+    public GrimReaper()
     {
-        super("Underworld", "the other side", special, lifePoints, 0, 0);
+        super("Underworld", "the other side", special, 2, 0, 0);
         myDescription = "\tGrim Reaper";
     }
 
 
-
+    /**
+     * For those who are unfortunate to encounter the Grim reaper, all of the player's life points
+     *      are removed, killing them instantly.
+     * @param people Person who encounters the Grim Reaper
+     */
     @Override
     public void interact(People people) {
         people.modifyLifePoints(-getLifePoints());
-        System.out.println( people.getDescription() + " met their untimely end at the hands of the Grim Reaper.");
+        System.out.println(people.getDescription() + " met their untimely end at the hands of the Grim Reaper.");
         reduceInteractionsLeft();
 
     }
 
+    /**
+     * This method will not be used by special characters and artifacts!
+     * @param otherPerson Opposing player
+     * @return Integer value of how much health is being given
+     */
     //npc wont be using these methods
     @Override
     public int healingStrategy(People otherPerson) {
         return 0;
     }
 
+    /**
+     * This method will not be used by special characters and artifacts!
+     * @param otherPerson Opposing player
+     * @return False because special characters never run away.
+     */
     @Override
     public boolean shouldRunAway(People otherPerson) {
         return false;

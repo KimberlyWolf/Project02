@@ -11,13 +11,21 @@ import static Project02.PeopleType.*;
 public class MysteriousPotion extends People {
 
 
-    public MysteriousPotion(String nation, String tribe, int lifePoints)
+    /**
+     * Constructor for the special artifact: Mysterious Potion
+     */
+    public MysteriousPotion()
     {
-        super(nation, tribe, special, lifePoints, 0, 0);
+        super("", "", special, 2, 0, 0);
         myDescription = "\tmysterious potion";
     }
 
 
+    /**
+     * Using the dice mechanic, this method determines whether the player should receive or lose health.
+     * If the dice roll is even, health is given, else, health is lost.
+     * @param people Person who encounters the Potion
+     */
     @Override
     public void interact(People people) {
         Die die = new Die(20);
@@ -43,12 +51,22 @@ public class MysteriousPotion extends People {
         reduceInteractionsLeft();
     }
 
+    /**
+     * This method will not be used by special characters and artifacts!
+     * @param otherPerson Opposing player
+     * @return Integer value of how much health is being given
+     */
     //npc wont be using these methods
     @Override
     public int healingStrategy(People otherPerson) {
         return 0;
     }
 
+    /**
+     * This method will not be used by special characters and artifacts!
+     * @param otherPerson Opposing player
+     * @return False because special characters never run away.
+     */
     @Override
     public boolean shouldRunAway(People otherPerson) {
         return false;

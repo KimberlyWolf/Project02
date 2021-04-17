@@ -148,7 +148,5 @@ public abstract class People
     {
         return new String( myNation + "\t" +  myTribe + "\t" + myDescription + "\t" + myLifePoints);
     }
-
-
 }
 
